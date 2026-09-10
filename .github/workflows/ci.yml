@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: shellcheck
+        run: shellcheck scripts/*.sh
+
+      - name: Check JS syntax
+        run: |
+          for file in scripts/*.mjs test/*.mjs; do
+            node --check "$file"
+          done
+
+      - name: Validate layer.config.json
+        run: node -e "JSON.parse(require('fs').readFileSync('layer.config.json','utf8'))"
+
+  prepare:
+    name: Build matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: matrix
+        run: FLAVORS=both node scripts/matrix.mjs
+
+  build:
+    name: ${{ matrix.layer }}
+    needs: prepare
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Build layer
+        env:
+          FLAVOR: ${{ matrix.flavor }}
+        run: scripts/build_layer.sh ${{ matrix.architecture }}
+
+      # The runner is the same architecture as the layer, so the smoke test runs
+      # the real binary rather than an emulated one.
+      - name: Smoke test
+        env:
+          FLAVOR: ${{ matrix.flavor }}
+        run: scripts/smoke_test.sh ${{ matrix.architecture }}

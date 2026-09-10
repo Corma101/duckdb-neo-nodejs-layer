@@ -1,0 +1,16 @@
+{
+  "name": "duckdb-neo-nodejs-layer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Build and publish AWS Lambda layers packaging @duckdb/node-api (DuckDB Node Neo)",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "scripts/build_layer.sh",
+    "smoke": "scripts/smoke_test.sh",
+    "publish:layer": "scripts/publish_layer.sh",
+    "arns": "node scripts/update_readme_arns.mjs",
+    "upstream": "node scripts/check_upstream.mjs"
+  },
+  "license": "MIT"
+}

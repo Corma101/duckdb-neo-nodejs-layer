@@ -1,0 +1,125 @@
+name: Release layers
+
+on:
+  workflow_dispatch:
+    inputs:
+      flavors:
+        description: Which layer flavors to build
+        type: choice
+        options: [base, extensions, both]
+        default: both
+      publish:
+        description: Publish to AWS (uncheck for a build-only dry run)
+        type: boolean
+        default: true
+      regions:
+        description: 'Space-separated regions (empty = all commercial regions)'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Build matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: matrix
+        env:
+          FLAVORS: ${{ inputs.flavors }}
+        run: node scripts/matrix.mjs
+
+  build:
+    name: ${{ matrix.layer }}
+    needs: prepare
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: true
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Build layer
+        env:
+          FLAVOR: ${{ matrix.flavor }}
+        run: scripts/build_layer.sh ${{ matrix.architecture }}
+
+      - name: Smoke test
+        env:
+          FLAVOR: ${{ matrix.flavor }}
+        run: scripts/smoke_test.sh ${{ matrix.architecture }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-${{ matrix.flavor }}-${{ matrix.architecture }}
+          path: release/*.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish to AWS
+    needs: [prepare, build]
+    if: ${{ inputs.publish }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-*
+          merge-multiple: true
+          path: release
+
+      - name: Assume the publishing role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Publish every layer
+        env:
+          MATRIX: ${{ needs.prepare.outputs.matrix }}
+          REGIONS: ${{ inputs.regions }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: |
+          node -e "
+            const { include } = JSON.parse(process.env.MATRIX);
+            for (const entry of include) console.log(entry.flavor + ' ' + entry.architecture);
+          " > /tmp/layers.txt
+          while read -r flavor architecture; do
+            FLAVOR="$flavor" scripts/publish_layer.sh "$architecture"
+          done < /tmp/layers.txt
+
+      - name: Regenerate the ARN tables
+        run: node scripts/update_readme_arns.mjs
+
+      - name: Commit the published ARNs
+        run: |
+          git add README.md arns
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "chore: publish DuckDB v$(node -p "require('./layer.config.json').duckdbVersion") layers"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
