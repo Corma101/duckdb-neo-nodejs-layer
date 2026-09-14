@@ -1,6 +1,6 @@
 {
   "$comment": "Single source of truth for the build and publish pipeline. Read from bash via `node -p`.",
-  "nodeApiVersion": "1.5.5-r.4",
+  "nodeApiVersion": "1.5.5-r.5",
   "duckdbVersion": "1.5.5",
   "compatibleRuntimes": ["nodejs22.x", "nodejs24.x"],
   "bundledExtensions": ["httpfs", "aws"],
