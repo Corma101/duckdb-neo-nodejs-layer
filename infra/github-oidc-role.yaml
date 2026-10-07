@@ -10,6 +10,15 @@ Parameters:
   RepositoryName:
     Type: String
     Default: duckdb-neo-nodejs-layer
+  SubjectPrefix:
+    Type: String
+    Default: repo:Corma101@138037078/duckdb-neo-nodejs-layer@1364532949
+    Description: >-
+      The repo segment of the OIDC subject claim. Repositories created after
+      2026-07-15 use immutable subject claims, which pin the owner and repository
+      by numeric ID (repo:OWNER@ID/REPO@ID) so a recycled name cannot inherit the
+      trust; older repositories use plain repo:OWNER/REPO. Read the exact value
+      from: gh api repos/OWNER/REPO/actions/oidc/customization/sub
   AllowedRef:
     Type: String
     Default: refs/heads/main
@@ -58,7 +67,7 @@ Resources:
               StringEquals:
                 # Without the aud check, any GitHub repository could assume this role.
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
-                token.actions.githubusercontent.com:sub: !Sub 'repo:${GitHubOrg}/${RepositoryName}:ref:${AllowedRef}'
+                token.actions.githubusercontent.com:sub: !Sub '${SubjectPrefix}:ref:${AllowedRef}'
       Policies:
         - PolicyName: publish-duckdb-layers
           PolicyDocument:

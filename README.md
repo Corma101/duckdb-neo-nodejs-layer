@@ -178,6 +178,18 @@ Pass `--parameter-overrides CreateOIDCProvider=false` if the account already has
 `token.actions.githubusercontent.com` provider — there can only be one per account. IAM is global, so the stack's
 region is cosmetic.
 
+One trap worth knowing about: repositories created after 2026-07-15 use GitHub's **immutable subject claims**, so
+the token's `sub` pins the owner and repository by numeric ID — `repo:OWNER@138037078/REPO@1364532949:ref:...`
+rather than `repo:OWNER/REPO:ref:...`. A trust policy written the old way is silently never matched, and the run
+fails with `Not authorized to perform sts:AssumeRoleWithWebIdentity` before publishing anything. Read the exact
+value for a repository with:
+
+```bash
+gh api repos/Corma101/duckdb-neo-nodejs-layer/actions/oidc/customization/sub --jq .sub_claim_prefix
+```
+
+and pass it as the `SubjectPrefix` parameter.
+
 Then point the repository at the role from the stack's `RoleArn` output:
 
 ```bash
