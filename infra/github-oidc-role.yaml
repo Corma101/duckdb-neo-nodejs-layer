@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  GitHub Actions OIDC trust and the role the Release layers workflow assumes to
+  publish public DuckDB Lambda layers.
+
+Parameters:
+  GitHubOrg:
+    Type: String
+    Default: Corma101
+  RepositoryName:
+    Type: String
+    Default: duckdb-neo-nodejs-layer
+  AllowedRef:
+    Type: String
+    Default: refs/heads/main
+    Description: >-
+      Only workflow runs on this ref can assume the role. Use
+      "environment:production" style subjects instead if you add an approval gate.
+  CreateOIDCProvider:
+    Type: String
+    AllowedValues: ['true', 'false']
+    Default: 'true'
+    Description: >-
+      Set to false when the account already has the
+      token.actions.githubusercontent.com provider (one per account).
+
+Conditions:
+  ShouldCreateProvider: !Equals [!Ref CreateOIDCProvider, 'true']
+
+Resources:
+  # No ThumbprintList: IAM verifies GitHub's JWKS certificate against its own
+  # library of trusted root CAs, so there is nothing to rotate.
+  GitHubOIDCProvider:
+    Type: AWS::IAM::OIDCProvider
+    Condition: ShouldCreateProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+
+  PublishLayersRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${RepositoryName}-publisher'
+      Description: !Sub 'Publishes public DuckDB Lambda layers from ${GitHubOrg}/${RepositoryName}'
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !If
+                - ShouldCreateProvider
+                - !Ref GitHubOIDCProvider
+                - !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com'
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                # Without the aud check, any GitHub repository could assume this role.
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: !Sub 'repo:${GitHubOrg}/${RepositoryName}:ref:${AllowedRef}'
+      Policies:
+        - PolicyName: publish-duckdb-layers
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: PublishAndSharePublicLayers
+                Effect: Allow
+                Action:
+                  - lambda:PublishLayerVersion
+                  - lambda:AddLayerVersionPermission
+                  - lambda:GetLayerVersion
+                Resource: !Sub 'arn:${AWS::Partition}:lambda:*:${AWS::AccountId}:layer:duckdb-neo-*'
+              - Sid: ListCommercialRegions
+                Effect: Allow
+                Action: ssm:GetParametersByPath
+                # AWS-owned public parameter, hence the empty account field.
+                Resource: !Sub 'arn:${AWS::Partition}:ssm:us-east-1::parameter/aws/service/global-infrastructure/regions'
+
+Outputs:
+  RoleArn:
+    Description: Set this as the AWS_ROLE_ARN repository variable
+    Value: !GetAtt PublishLayersRole.Arn
+  SetVariableCommand:
+    Value: !Sub 'gh variable set AWS_ROLE_ARN --repo ${GitHubOrg}/${RepositoryName} --body ${PublishLayersRole.Arn}'

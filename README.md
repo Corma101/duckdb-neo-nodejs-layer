@@ -160,30 +160,33 @@ Regions the account has not opted into are reported and skipped rather than fail
 
 ### AWS setup
 
-The `publish` job authenticates with GitHub's OIDC provider, so there are no long-lived keys. Set the repository
-variable `AWS_ROLE_ARN` to a role that trusts this repository and can do:
+Layers are published from an AWS account dedicated to public artifacts, not from an application account. The reason
+is permanence: the account ID is part of every public layer ARN, so whichever account publishes a layer is the one
+every consumer references for as long as that layer exists. Moving later means republishing under new ARNs and
+asking everyone to update.
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "lambda:PublishLayerVersion",
-        "lambda:AddLayerVersionPermission",
-        "lambda:GetLayerVersion"
-      ],
-      "Resource": "arn:aws:lambda:*:$ACCOUNT_ID:layer:duckdb-neo-*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ssm:GetParametersByPath",
-      "Resource": "arn:aws:ssm:us-east-1::parameter/aws/service/global-infrastructure/regions"
-    }
-  ]
-}
+The `publish` job authenticates through GitHub's OIDC provider, so there are no long-lived keys anywhere.
+[`infra/github-oidc-role.yaml`](infra/github-oidc-role.yaml) creates both halves — the account's OIDC provider and a
+role that can do three things on layers named `duckdb-neo-*` and nothing else. Deploy it once, with admin
+credentials on the publishing account:
+
+```bash
+aws cloudformation deploy --region eu-west-3 --stack-name duckdb-neo-layer-publisher --template-file infra/github-oidc-role.yaml --capabilities CAPABILITY_NAMED_IAM
 ```
+
+Pass `--parameter-overrides CreateOIDCProvider=false` if the account already has a
+`token.actions.githubusercontent.com` provider — there can only be one per account. IAM is global, so the stack's
+region is cosmetic.
+
+Then point the repository at the role from the stack's `RoleArn` output:
+
+```bash
+gh variable set AWS_ROLE_ARN --repo Corma101/duckdb-neo-nodejs-layer --body "<RoleArn>"
+```
+
+A note on coverage: roughly half of AWS regions are opt-in and disabled by default, so a fresh account publishes to
+about 17 of them. The publish script reports and skips the rest rather than failing. Enable the ones you want under
+**Account → Regions** in the publishing account, then run the release again.
 
 To publish from a laptop instead, export credentials and run:
 
