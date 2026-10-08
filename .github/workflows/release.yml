@@ -69,12 +69,17 @@ jobs:
           retention-days: 7
 
   publish:
-    name: Publish to AWS
+    name: Publish ${{ matrix.layer }}
     needs: [prepare, build]
     if: ${{ inputs.publish }}
     runs-on: ubuntu-latest
+    # One job per layer: each assumes the role on its own, so a session cannot
+    # expire half way through the matrix, and a region that refuses the upload
+    # costs one layer rather than the tail of everything.
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     permissions:
-      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v5
@@ -85,8 +90,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          pattern: layer-*
-          merge-multiple: true
+          name: layer-${{ matrix.flavor }}-${{ matrix.architecture }}
           path: release
 
       - name: Assume the publishing role
@@ -95,19 +99,45 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
-      - name: Publish every layer
+      - name: Publish to every region
         env:
-          MATRIX: ${{ needs.prepare.outputs.matrix }}
+          FLAVOR: ${{ matrix.flavor }}
           REGIONS: ${{ inputs.regions }}
           AWS_EC2_METADATA_DISABLED: 'true'
-        run: |
-          node -e "
-            const { include } = JSON.parse(process.env.MATRIX);
-            for (const entry of include) console.log(entry.flavor + ' ' + entry.architecture);
-          " > /tmp/layers.txt
-          while read -r flavor architecture; do
-            FLAVOR="$flavor" scripts/publish_layer.sh "$architecture"
-          done < /tmp/layers.txt
+        run: scripts/publish_layer.sh ${{ matrix.architecture }}
+
+      # always(): a partial publish is still worth recording, and the script
+      # writes its state file on the way out even when it fails.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: arns-${{ matrix.flavor }}-${{ matrix.architecture }}
+          path: arns/*.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+  record:
+    name: Record published ARNs
+    needs: [publish]
+    if: ${{ !cancelled() && inputs.publish }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # Merges onto the ARNs already committed, so a layer that failed this run
+      # keeps the ARNs it had rather than disappearing from the tables.
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: arns-*
+          merge-multiple: true
+          path: arns
 
       - name: Regenerate the ARN tables
         run: node scripts/update_readme_arns.mjs

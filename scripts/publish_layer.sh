@@ -44,7 +44,22 @@ fi
 
 RESULTS="$(mktemp)"
 FAILED=""
-trap 'rm -f "$RESULTS"' EXIT
+
+# Record on the way out, whatever happens: an expired session or a region that
+# refuses the upload must not throw away the regions that did publish.
+record_results() {
+  if [ -s "$RESULTS" ]; then
+    node "$REPO_ROOT/scripts/record_arns.mjs" \
+      --layer-name "$LAYER_NAME" \
+      --architecture "$ARCH" \
+      --flavor "$FLAVOR" \
+      --duckdb-version "$DUCKDB_VERSION" \
+      --node-api-version "$NODE_API_VERSION" \
+      --results "$RESULTS"
+  fi
+  rm -f "$RESULTS"
+}
+trap record_results EXIT
 
 for region in $REGIONS; do
   if is_excluded_region "$region"; then
@@ -69,7 +84,8 @@ for region in $REGIONS; do
   if [ $STATUS -ne 0 ]; then
     # Opt-in regions the account hasn't enabled, brand new regions, and regions
     # without the requested architecture all land here. Keep going.
-    echo "    skipped $region: ${LAYER_ARN%%$'\n'*}" >&2
+    REASON="$(printf '%s' "$LAYER_ARN" | grep -v '^[[:space:]]*$' | head -1)"
+    echo "    skipped $region: ${REASON:-unknown error}" >&2
     FAILED="$FAILED $region"
     continue
   fi
@@ -94,14 +110,6 @@ if [ ! -s "$RESULTS" ]; then
   echo "nothing was published -- check your AWS credentials and region list" >&2
   exit 1
 fi
-
-node "$REPO_ROOT/scripts/record_arns.mjs" \
-  --layer-name "$LAYER_NAME" \
-  --architecture "$ARCH" \
-  --flavor "$FLAVOR" \
-  --duckdb-version "$DUCKDB_VERSION" \
-  --node-api-version "$NODE_API_VERSION" \
-  --results "$RESULTS"
 
 log "published to $(wc -l < "$RESULTS" | tr -d ' ') region(s)"
 [ -n "$FAILED" ] && log "skipped regions:$FAILED"

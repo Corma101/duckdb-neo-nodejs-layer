@@ -153,8 +153,13 @@ matching platform, so CI runs each architecture on its own native runner.
 
 Publishing is manual, through the **Release layers** workflow (`workflow_dispatch`): pick the flavors, optionally
 narrow the regions, and untick *publish* for a build-only dry run. The workflow builds and smoke-tests every
-architecture, publishes each layer to every commercial region, grants `lambda:GetLayerVersion` to `*` so the layers
-are public, then commits the resulting ARNs and regenerated README tables.
+architecture, then publishes each layer in its own job — one assumed role per layer, since four layers uploading
+23–36 MB across every region in sequence outlives a one-hour session. Each job grants `lambda:GetLayerVersion` to
+`*` so the layer is public, and a final job commits the resulting ARNs and regenerated README tables.
+
+That last job runs even when part of the matrix fails, and the publish script writes its state file on the way out,
+so whatever reached AWS is recorded and discoverable. A half-published release still has an ARN table; for a public
+repository, an ARN nobody can copy is barely a release at all.
 
 Regions the account has not opted into are reported and skipped rather than failing the run.
 
