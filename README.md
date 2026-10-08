@@ -125,6 +125,12 @@ _No layer has been published yet. Run the **Release layers** workflow, and this 
 The tables above are generated from the state committed under [`arns/`](arns) by the release workflow — edit
 [`scripts/update_readme_arns.mjs`](scripts/update_readme_arns.mjs), never the tables themselves.
 
+Every row carries its own DuckDB and Node Neo versions rather than inheriting them from a heading, because a release
+that fails part way leaves regions on different layer versions and a pinned ARN has to be readable on its own. If
+you want to assert in CI that your installed `@duckdb/node-api` matches the layer you pin, read
+`arns/<layer-name>.json` instead of parsing the table: it is the same state, with a stable schema —
+`current.regions[<region>]` gives `layerVersion`, `arn`, `duckdbVersion`, `nodeApiVersion` and `publishedAt`.
+
 ## Building locally
 
 Requirements: Node.js 22+ (npm 10.2+ for the `--os`/`--cpu`/`--libc` flags), `zip`, `unzip`, and Docker for the smoke

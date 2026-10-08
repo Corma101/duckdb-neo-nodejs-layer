@@ -56,10 +56,14 @@ if (states.length === 0) {
       }
       sections.push('');
 
-      sections.push('| Region | Layer ARN |');
-      sections.push('|---|---|');
-      for (const [region, { arn }] of Object.entries(current.regions)) {
-        sections.push(`| ${region} | \`${arn}\` |`);
+      // The versions are per region on purpose: a partial release leaves regions
+      // behind, and a consumer pinning one ARN needs that row to be self-contained.
+      sections.push('| Region | Layer ARN | DuckDB | Node Neo release |');
+      sections.push('|---|---|---|---|');
+      for (const [region, entry] of Object.entries(current.regions)) {
+        const duckdb = entry.duckdbVersion ?? current.duckdbVersion;
+        const nodeApi = entry.nodeApiVersion ?? current.nodeApiVersion;
+        sections.push(`| ${region} | \`${entry.arn}\` | v${duckdb} | \`${nodeApi}\` |`);
       }
       sections.push('');
     }

@@ -20,11 +20,18 @@ for (const required of ['layer-name', 'architecture', 'flavor', 'duckdb-version'
   }
 }
 
+const publishedAt = new Date().toISOString();
+const duckdbVersion = args.get('duckdb-version');
+const nodeApiVersion = args.get('node-api-version');
+
+// Each region carries the version it actually holds, not the version of the
+// most recent run: a partial release leaves regions on different versions, and
+// a consumer reading one row needs to know which one it is looking at.
 const regions = {};
 for (const line of readFileSync(args.get('results'), 'utf8').split('\n')) {
   if (!line.trim()) continue;
   const [region, layerVersion, arn] = line.split('\t');
-  regions[region] = { layerVersion: Number(layerVersion), arn };
+  regions[region] = { layerVersion: Number(layerVersion), arn, duckdbVersion, nodeApiVersion, publishedAt };
 }
 
 const layerName = args.get('layer-name');
@@ -33,22 +40,25 @@ const state = existsSync(statePath)
   ? JSON.parse(readFileSync(statePath, 'utf8'))
   : { layerName, architecture: args.get('architecture'), flavor: args.get('flavor'), history: [] };
 
-const publishedAt = new Date().toISOString();
 const layerVersions = [...new Set(Object.values(regions).map((r) => r.layerVersion))].sort((a, b) => a - b);
 
+// Merge rather than replace: a region missed by this run keeps the ARN it was
+// last known to serve instead of vanishing from the tables.
+const mergedRegions = { ...(state.current?.regions ?? {}), ...regions };
+
 state.current = {
-  duckdbVersion: args.get('duckdb-version'),
-  nodeApiVersion: args.get('node-api-version'),
+  duckdbVersion,
+  nodeApiVersion,
   publishedAt,
   layerVersions,
-  regions: Object.fromEntries(Object.entries(regions).sort(([a], [b]) => a.localeCompare(b))),
+  regions: Object.fromEntries(Object.entries(mergedRegions).sort(([a], [b]) => a.localeCompare(b))),
 };
 state.history = [
-  ...state.history.filter((entry) => entry.nodeApiVersion !== args.get('node-api-version')),
+  ...state.history.filter((entry) => entry.nodeApiVersion !== nodeApiVersion),
   {
     layerVersions,
-    duckdbVersion: args.get('duckdb-version'),
-    nodeApiVersion: args.get('node-api-version'),
+    duckdbVersion,
+    nodeApiVersion,
     publishedAt,
   },
 ].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
