@@ -47,6 +47,7 @@ FAILED=""
 
 # Record on the way out, whatever happens: an expired session or a region that
 # refuses the upload must not throw away the regions that did publish.
+# shellcheck disable=SC2317  # reached through the EXIT trap below
 record_results() {
   if [ -s "$RESULTS" ]; then
     node "$REPO_ROOT/scripts/record_arns.mjs" \
