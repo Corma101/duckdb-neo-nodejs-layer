@@ -1,0 +1,144 @@
+{
+  "layerName": "duckdb-neo-extensions-nodejs-arm64",
+  "architecture": "arm64",
+  "flavor": "extensions",
+  "history": [
+    {
+      "layerVersions": [
+        1
+      ],
+      "duckdbVersion": "1.5.5",
+      "nodeApiVersion": "1.5.5-r.4",
+      "publishedAt": "2026-10-08T14:28:19.461Z"
+    }
+  ],
+  "current": {
+    "duckdbVersion": "1.5.5",
+    "nodeApiVersion": "1.5.5-r.4",
+    "publishedAt": "2026-10-08T14:28:19.461Z",
+    "layerVersions": [
+      1
+    ],
+    "regions": {
+      "ap-northeast-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ap-northeast-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "ap-northeast-2": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ap-northeast-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "ap-northeast-3": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ap-northeast-3:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "ap-south-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ap-south-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "ap-southeast-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ap-southeast-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "ap-southeast-2": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ap-southeast-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "ca-central-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:ca-central-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "eu-central-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:eu-central-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "eu-north-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:eu-north-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "eu-west-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:eu-west-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "eu-west-2": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:eu-west-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "eu-west-3": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:eu-west-3:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "sa-east-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:sa-east-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "us-east-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:us-east-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "us-east-2": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:us-east-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "us-west-1": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:us-west-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      },
+      "us-west-2": {
+        "layerVersion": 1,
+        "arn": "arn:aws:lambda:us-west-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1",
+        "duckdbVersion": "1.5.5",
+        "nodeApiVersion": "1.5.5-r.4",
+        "publishedAt": "2026-10-08T14:28:19.461Z"
+      }
+    }
+  }
+}

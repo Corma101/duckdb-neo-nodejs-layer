@@ -119,7 +119,122 @@ in an environment variable.
 
 <!-- BEGIN:ARNS -->
 
-_No layer has been published yet. Run the **Release layers** workflow, and this section will be filled in automatically._
+### Base layers
+
+#### `duckdb-neo-nodejs-arm64` (arm64)
+
+Latest: **DuckDB v1.5.5** (`@duckdb/node-api@1.5.5-r.4`), published 2026-10-08.
+
+| Layer version | DuckDB version | Node Neo release |
+|---|---|---|
+| 2 | v1.5.5 | `1.5.5-r.4` |
+
+| Region | Layer ARN | DuckDB | Node Neo release |
+|---|---|---|---|
+| ap-northeast-1 | `arn:aws:lambda:ap-northeast-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-2 | `arn:aws:lambda:ap-northeast-2:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-3 | `arn:aws:lambda:ap-northeast-3:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-south-1 | `arn:aws:lambda:ap-south-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-1 | `arn:aws:lambda:ap-southeast-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-2 | `arn:aws:lambda:ap-southeast-2:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| ca-central-1 | `arn:aws:lambda:ca-central-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-central-1 | `arn:aws:lambda:eu-central-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-north-1 | `arn:aws:lambda:eu-north-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-1 | `arn:aws:lambda:eu-west-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-2 | `arn:aws:lambda:eu-west-2:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-3 | `arn:aws:lambda:eu-west-3:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| sa-east-1 | `arn:aws:lambda:sa-east-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| us-east-1 | `arn:aws:lambda:us-east-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| us-east-2 | `arn:aws:lambda:us-east-2:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| us-west-1 | `arn:aws:lambda:us-west-1:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+| us-west-2 | `arn:aws:lambda:us-west-2:902785551640:layer:duckdb-neo-nodejs-arm64:2` | v1.5.5 | `1.5.5-r.4` |
+
+#### `duckdb-neo-nodejs-x86` (x86_64)
+
+Latest: **DuckDB v1.5.5** (`@duckdb/node-api@1.5.5-r.4`), published 2026-10-08.
+
+| Layer version | DuckDB version | Node Neo release |
+|---|---|---|
+| 2 | v1.5.5 | `1.5.5-r.4` |
+
+| Region | Layer ARN | DuckDB | Node Neo release |
+|---|---|---|---|
+| ap-northeast-1 | `arn:aws:lambda:ap-northeast-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-2 | `arn:aws:lambda:ap-northeast-2:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-3 | `arn:aws:lambda:ap-northeast-3:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-south-1 | `arn:aws:lambda:ap-south-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-1 | `arn:aws:lambda:ap-southeast-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-2 | `arn:aws:lambda:ap-southeast-2:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ca-central-1 | `arn:aws:lambda:ca-central-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-central-1 | `arn:aws:lambda:eu-central-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-north-1 | `arn:aws:lambda:eu-north-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-1 | `arn:aws:lambda:eu-west-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-2 | `arn:aws:lambda:eu-west-2:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-3 | `arn:aws:lambda:eu-west-3:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| sa-east-1 | `arn:aws:lambda:sa-east-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| us-east-1 | `arn:aws:lambda:us-east-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| us-east-2 | `arn:aws:lambda:us-east-2:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| us-west-1 | `arn:aws:lambda:us-west-1:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| us-west-2 | `arn:aws:lambda:us-west-2:902785551640:layer:duckdb-neo-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+
+### Layers with bundled extensions
+
+#### `duckdb-neo-extensions-nodejs-arm64` (arm64)
+
+Latest: **DuckDB v1.5.5** (`@duckdb/node-api@1.5.5-r.4`), published 2026-10-08.
+
+| Layer version | DuckDB version | Node Neo release |
+|---|---|---|
+| 1 | v1.5.5 | `1.5.5-r.4` |
+
+| Region | Layer ARN | DuckDB | Node Neo release |
+|---|---|---|---|
+| ap-northeast-1 | `arn:aws:lambda:ap-northeast-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-2 | `arn:aws:lambda:ap-northeast-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-3 | `arn:aws:lambda:ap-northeast-3:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-south-1 | `arn:aws:lambda:ap-south-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-1 | `arn:aws:lambda:ap-southeast-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-2 | `arn:aws:lambda:ap-southeast-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| ca-central-1 | `arn:aws:lambda:ca-central-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-central-1 | `arn:aws:lambda:eu-central-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-north-1 | `arn:aws:lambda:eu-north-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-1 | `arn:aws:lambda:eu-west-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-2 | `arn:aws:lambda:eu-west-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-3 | `arn:aws:lambda:eu-west-3:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| sa-east-1 | `arn:aws:lambda:sa-east-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| us-east-1 | `arn:aws:lambda:us-east-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| us-east-2 | `arn:aws:lambda:us-east-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| us-west-1 | `arn:aws:lambda:us-west-1:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+| us-west-2 | `arn:aws:lambda:us-west-2:902785551640:layer:duckdb-neo-extensions-nodejs-arm64:1` | v1.5.5 | `1.5.5-r.4` |
+
+#### `duckdb-neo-extensions-nodejs-x86` (x86_64)
+
+Latest: **DuckDB v1.5.5** (`@duckdb/node-api@1.5.5-r.4`), published 2026-10-08.
+
+| Layer version | DuckDB version | Node Neo release |
+|---|---|---|
+| 1, 2 | v1.5.5 | `1.5.5-r.4` |
+
+| Region | Layer ARN | DuckDB | Node Neo release |
+|---|---|---|---|
+| ap-northeast-1 | `arn:aws:lambda:ap-northeast-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-2 | `arn:aws:lambda:ap-northeast-2:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-northeast-3 | `arn:aws:lambda:ap-northeast-3:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-south-1 | `arn:aws:lambda:ap-south-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-1 | `arn:aws:lambda:ap-southeast-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| ap-southeast-2 | `arn:aws:lambda:ap-southeast-2:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| ca-central-1 | `arn:aws:lambda:ca-central-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-central-1 | `arn:aws:lambda:eu-central-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-north-1 | `arn:aws:lambda:eu-north-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-1 | `arn:aws:lambda:eu-west-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-2 | `arn:aws:lambda:eu-west-2:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| eu-west-3 | `arn:aws:lambda:eu-west-3:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| sa-east-1 | `arn:aws:lambda:sa-east-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| us-east-1 | `arn:aws:lambda:us-east-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| us-east-2 | `arn:aws:lambda:us-east-2:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+| us-west-1 | `arn:aws:lambda:us-west-1:902785551640:layer:duckdb-neo-extensions-nodejs-x86:2` | v1.5.5 | `1.5.5-r.4` |
+| us-west-2 | `arn:aws:lambda:us-west-2:902785551640:layer:duckdb-neo-extensions-nodejs-x86:1` | v1.5.5 | `1.5.5-r.4` |
+
 <!-- END:ARNS -->
 
 The tables above are generated from the state committed under [`arns/`](arns) by the release workflow — edit
